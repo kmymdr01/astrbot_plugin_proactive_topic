@@ -1,0 +1,205 @@
+{
+  "enabled": {
+    "description": "总开关",
+    "type": "bool",
+    "default": true,
+    "hint": "关闭后所有会话都不会主动发言，但会继续记录会话，重新开启即可恢复。"
+  },
+  "enable_private": {
+    "description": "在私聊中启用",
+    "type": "bool",
+    "default": true
+  },
+  "enable_group": {
+    "description": "在群聊中启用",
+    "type": "bool",
+    "default": true,
+    "hint": "关闭后群聊不会再主动发起话题，私聊不受影响。"
+  },
+  "group_whitelist": {
+    "description": "群聊白名单",
+    "type": "list",
+    "default": [],
+    "hint": "留空表示所有群都生效；填写后只有列表中的群生效。可填会话 UMO（platform_id:GroupMessage:群号）、群号，或 平台实例ID:群号。"
+  },
+  "group_blacklist": {
+    "description": "群聊黑名单",
+    "type": "list",
+    "default": [],
+    "hint": "列表中的群不会主动发言，优先级高于白名单。格式同白名单。"
+  },
+  "interval_minutes": {
+    "description": "触发间隔（分钟）",
+    "type": "int",
+    "default": 90,
+    "slider": {
+      "min": 5,
+      "max": 1440,
+      "step": 5
+    },
+    "hint": "每个会话各自独立计时。实际间隔会在此基础上随机浮动。"
+  },
+  "interval_jitter_percent": {
+    "description": "间隔随机浮动（%）",
+    "type": "int",
+    "default": 30,
+    "slider": {
+      "min": 0,
+      "max": 80,
+      "step": 5
+    },
+    "hint": "例如间隔 90 分钟、浮动 30%，则实际间隔在 63~117 分钟之间随机，避免太机械。"
+  },
+  "context_probability": {
+    "description": "上下文相关话题的概率（%）",
+    "type": "int",
+    "default": 50,
+    "slider": {
+      "min": 0,
+      "max": 100,
+      "step": 5
+    },
+    "hint": "其余概率会生成符合人设的全新话题。最近聊天记录不足时会自动改为全新话题。"
+  },
+  "idle_minutes": {
+    "description": "静默多久后才主动发言（分钟）",
+    "type": "int",
+    "default": 10,
+    "slider": {
+      "min": 0,
+      "max": 240,
+      "step": 1
+    },
+    "hint": "会话里最近有人说话时不会插话，等安静够久再开口。0 表示不限制。"
+  },
+  "session_active_days": {
+    "description": "长期无互动暂停（天）",
+    "type": "int",
+    "default": 7,
+    "slider": {
+      "min": 0,
+      "max": 90,
+      "step": 1
+    },
+    "hint": "会话超过这么多天没有任何人发言，就不再主动发起话题，避免在废弃会话里持续消耗 token。0 表示不限制。"
+  },
+  "active_hours": {
+    "description": "活跃时段",
+    "type": "string",
+    "default": "08:00-23:30",
+    "hint": "只在此时段内主动发言，留空表示全天。支持多段：08:00-12:00,14:00-23:30；支持跨天：22:00-02:00。"
+  },
+  "max_per_day": {
+    "description": "每个会话每日上限",
+    "type": "int",
+    "default": 12,
+    "slider": {
+      "min": 0,
+      "max": 100,
+      "step": 1
+    },
+    "hint": "达到上限后当天不再主动发言。0 表示不限制。"
+  },
+  "topic_max_chars": {
+    "description": "话题最大字数",
+    "type": "int",
+    "default": 120,
+    "slider": {
+      "min": 20,
+      "max": 500,
+      "step": 10
+    },
+    "hint": "超长内容会被截断，建议 60~150 字，保持像真人在聊天。"
+  },
+  "context_message_count": {
+    "description": "参考的最近消息条数",
+    "type": "int",
+    "default": 20,
+    "slider": {
+      "min": 4,
+      "max": 60,
+      "step": 2
+    },
+    "hint": "生成上下文相关话题时，最多把这些条最近消息交给模型参考。"
+  },
+  "context_min_messages": {
+    "description": "上下文模式的最少消息数",
+    "type": "int",
+    "default": 3,
+    "slider": {
+      "min": 1,
+      "max": 20,
+      "step": 1
+    },
+    "hint": "最近消息少于该数量时，即使抽中上下文模式也会改为生成全新话题。"
+  },
+  "context_max_age_hours": {
+    "description": "上下文消息的有效期（小时）",
+    "type": "int",
+    "default": 24,
+    "slider": {
+      "min": 1,
+      "max": 168,
+      "step": 1
+    },
+    "hint": "超过这个时间的旧消息不会被当作上下文，避免接着几天前的话题聊。"
+  },
+  "provider_id": {
+    "description": "生成话题使用的模型提供商",
+    "type": "string",
+    "default": "",
+    "_special": "select_provider",
+    "hint": "留空则使用当前会话所用的模型。"
+  },
+  "persona_id": {
+    "description": "生成话题使用的人格",
+    "type": "string",
+    "default": "",
+    "_special": "select_persona",
+    "hint": "留空则跟随会话 / 全局默认人格。"
+  },
+  "extra_system_prompt": {
+    "description": "额外提示词",
+    "type": "text",
+    "default": "",
+    "hint": "追加在系统提示词末尾，例如“不要问太私人的问题”“多用轻松的语气”。"
+  },
+  "inject_proactive_context": {
+    "description": "把主动消息补进下一次对话上下文",
+    "type": "bool",
+    "default": true,
+    "hint": "用户回复你主动发出的消息时，临时告诉模型你刚刚说过什么，回复会更自然。"
+  },
+  "inject_context_minutes": {
+    "description": "主动消息上下文的有效期（分钟）",
+    "type": "int",
+    "default": 180,
+    "slider": {
+      "min": 10,
+      "max": 1440,
+      "step": 10
+    },
+    "hint": "超过这个时间后用户再回复，就不再补充这条背景。"
+  },
+  "llm_timeout_seconds": {
+    "description": "生成话题超时（秒）",
+    "type": "int",
+    "default": 60,
+    "slider": {
+      "min": 10,
+      "max": 180,
+      "step": 5
+    }
+  },
+  "session_ttl_days": {
+    "description": "会话记录保留天数",
+    "type": "int",
+    "default": 30,
+    "slider": {
+      "min": 1,
+      "max": 365,
+      "step": 1
+    },
+    "hint": "超过这么多天没有消息的会话会被自动清理，避免数据无限增长。"
+  }
+}

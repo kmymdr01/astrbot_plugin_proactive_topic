@@ -1,0 +1,8 @@
+name: astrbot_plugin_proactive_topic
+display_name: 主动话题
+desc: 让机器人在私聊或群聊安静一段时间后主动开口。触发频率、每日上限、活跃时段可调；话题在「结合最近聊天」与「符合人设的全新话题」之间按概率随机；可分别控制私聊 / 群聊是否生效。
+short_desc: 主动找话题聊，频率和话题类型概率都能调。
+version: v1.1.1
+author: kmymdr01
+repo: https://github.com/kmymdr01/astrbot_plugin_proactive_topic
+astrbot_version: ">=4.5.7"
